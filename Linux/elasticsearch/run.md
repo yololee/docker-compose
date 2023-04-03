@@ -9,9 +9,9 @@ docker-compose -f docker-compose-elasticsearch.yml -p elasticsearch up -d
 #chmod -R 777 ./elasticsearch
 ```
 
-1. ES访问地址：[`ip地址:9200`](http://www.zhengqingya.com:9200)
+1. ES访问地址：`ip地址:9200`
    默认账号密码：`elastic/123456`
-2. kibana访问地址：[`ip地址:5601/app/dev_tools#/console`](http://www.zhengqingya.com:5601/app/dev_tools#/console)
+2. kibana访问地址：`ip地址:5601/app/dev_tools#/console`
    默认账号密码：`elastic/123456`
 
 ---
@@ -30,10 +30,6 @@ elasticsearch-setup-passwords interactive
 # 访问
 curl 127.0.0.1:9200 -u elastic:123456
 ```
-
-![elasticsearch_set_auto_password.png](./../../image/elasticsearch_set_auto_password.png)
-![elasticsearch_set_password.png](./../../image/elasticsearch_set_password.png)
-![elasticsearch_curl.png](./../../image/elasticsearch_curl.png)
 
 #### 修改ES密码
 

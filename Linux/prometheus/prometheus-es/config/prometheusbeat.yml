@@ -1,0 +1,10 @@
+prometheusbeat:
+  # prometheusbeat 服务的端口。默认为8080
+  listen: ":8080"
+  # Context path. Defaults to /prometheus
+  context: "/prometheus"
+output.elasticsearch:
+  # elasticsearch 的地址
+  hosts: ["192.168.10.125:9200"]
+  username: "elastic"
+  password: "123456"

@@ -1,0 +1,58 @@
+version: "3"
+
+# 网桥 -> 方便相互通讯
+networks:
+  prometheus:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.22.0.0/24"
+services:
+  # 开源的系统监控和报警系统
+  prometheus:
+    image: prom/prometheus:v2.34.0
+    container_name: hl-prometheus
+    restart: unless-stopped
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+      # - "./web-config.yml:/etc/prometheus/web-config.yml"
+    command: 
+      --config.file=/etc/prometheus/prometheus.yml
+      --web.enable-lifecycle
+      # --web.config.file=/etc/prometheus/web-config.yml
+    ports:
+      - "19090:9090"
+    depends_on:
+      - hl-node-exporter
+    networks:
+      prometheus:
+        ipv4_address: 172.22.0.11
+
+  # 采集服务器层面的运行指标
+  node-exporter:
+    image: prom/node-exporter:v1.3.1
+    container_name: hl-node-exporter
+    restart: unless-stopped
+    volumes:
+      - "./node-exporter/proc:/host/proc:ro"
+      - "./node-exporter/sys:/host/sys:ro"
+      - "./node-exporter:/rootfs:ro"
+    ports:
+      - "19100:9100"
+    networks:
+      prometheus:
+        ipv4_address: 172.22.0.22
+  # 使用prometheusbeat 把prometheus的数据存储到elasticsearch中
+  beat:
+    image: infonova/prometheusbeat
+    container_name: hl-prometheusbeat
+    ports:
+      - 18081:8080
+    depends_on:
+      - hl-prometheus
+    volumes:
+      - "./config/prometheusbeat.yml:/prometheusbeat.yml"
+      - "/etc/localtime:/etc/localtime"
+    networks:
+      prometheus:
+         ipv4_address: 172.22.0.33

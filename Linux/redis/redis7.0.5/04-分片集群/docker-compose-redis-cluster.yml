@@ -10,7 +10,7 @@ networks:
 
 services:
   redis-6381:
-    image: registry.cn-hangzhou.aliyuncs.com/zhengqing/redis:7.0.5                   # 镜像'redis:7.0.5'
+    image: redis:7.0.5                   # 镜像'redis:7.0.5'
     container_name: redis-6381                                                       # 容器名为'redis-6381'
     restart: unless-stopped                                                                   # 指定容器退出后的重启策略为始终重启，但是不考虑在Docker守护进程启动时就已经停止了的容器
     # 启动redis服务并添加密码为：123456,默认不开启redis-aof方式持久化配置
@@ -28,7 +28,7 @@ services:
       redis:
         ipv4_address: 172.28.0.11
   redis-6382:
-    image: registry.cn-hangzhou.aliyuncs.com/zhengqing/redis:7.0.5                   # 镜像'redis:7.0.5'
+    image: redis:7.0.5                   # 镜像'redis:7.0.5'
     container_name: redis-6382                                                       # 容器名为'redis-6382'
     restart: unless-stopped                                                                   # 指定容器退出后的重启策略为始终重启，但是不考虑在Docker守护进程启动时就已经停止了的容器
     # 启动redis服务并添加密码为：123456,默认不开启redis-aof方式持久化配置
@@ -46,7 +46,7 @@ services:
       redis:
         ipv4_address: 172.28.0.2
   redis-6383:
-    image: registry.cn-hangzhou.aliyuncs.com/zhengqing/redis:7.0.5                   # 镜像'redis:7.0.5'
+    image: redis:7.0.5                   # 镜像'redis:7.0.5'
     container_name: redis-6383                                                       # 容器名为'redis-6383'
     restart: unless-stopped                                                                   # 指定容器退出后的重启策略为始终重启，但是不考虑在Docker守护进程启动时就已经停止了的容器
     # 启动redis服务并添加密码为：123456,默认不开启redis-aof方式持久化配置
@@ -64,7 +64,7 @@ services:
       redis:
         ipv4_address: 172.28.0.3
   redis-6384:
-    image: registry.cn-hangzhou.aliyuncs.com/zhengqing/redis:7.0.5                   # 镜像'redis:7.0.5'
+    image: redis:7.0.5                   # 镜像'redis:7.0.5'
     container_name: redis-6384                                                       # 容器名为'redis-6384'
     restart: unless-stopped                                                                   # 指定容器退出后的重启策略为始终重启，但是不考虑在Docker守护进程启动时就已经停止了的容器
     # 启动redis服务并添加密码为：123456,默认不开启redis-aof方式持久化配置
@@ -82,7 +82,7 @@ services:
       redis:
         ipv4_address: 172.28.0.4
   redis-6385:
-    image: registry.cn-hangzhou.aliyuncs.com/zhengqing/redis:7.0.5                   # 镜像'redis:7.0.5'
+    image: redis:7.0.5                   # 镜像'redis:7.0.5'
     container_name: redis-6385                                                       # 容器名为'redis-6385'
     restart: unless-stopped                                                                   # 指定容器退出后的重启策略为始终重启，但是不考虑在Docker守护进程启动时就已经停止了的容器
     # 启动redis服务并添加密码为：123456,默认不开启redis-aof方式持久化配置
@@ -100,7 +100,7 @@ services:
       redis:
         ipv4_address: 172.28.0.5
   redis-6386:
-    image: registry.cn-hangzhou.aliyuncs.com/zhengqing/redis:7.0.5                    # 镜像'redis:7.0.5'
+    image: redis:7.0.5                    # 镜像'redis:7.0.5'
     container_name: redis-6386                                                        # 容器名为'redis-6386'
     restart: unless-stopped                                                                   # 指定容器退出后的重启策略为始终重启，但是不考虑在Docker守护进程启动时就已经停止了的容器
     # 启动redis服务并添加密码为：123456,默认不开启redis-aof方式持久化配置
@@ -120,7 +120,7 @@ services:
 
   # 用于测试加入新节点
   redis-6388:
-    image: registry.cn-hangzhou.aliyuncs.com/zhengqing/redis:7.0.5                    # 镜像'redis:7.0.5'
+    image: redis:7.0.5                    # 镜像'redis:7.0.5'
     container_name: redis-6388                                                        # 容器名为'redis-6388'
     restart: unless-stopped                                                                   # 指定容器退出后的重启策略为始终重启，但是不考虑在Docker守护进程启动时就已经停止了的容器
     # 启动redis服务并添加密码为：123456,默认不开启redis-aof方式持久化配置

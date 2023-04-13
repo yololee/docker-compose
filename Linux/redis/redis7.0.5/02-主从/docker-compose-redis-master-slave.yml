@@ -7,7 +7,7 @@ networks:
 services:
   # 主
   redis-master:
-    image: registry.cn-hangzhou.aliyuncs.com/zhengqing/redis:7.0.5                    # 镜像'redis:7.0.5'
+    image: redis:7.0.5                    # 镜像'redis:7.0.5'
     container_name: redis-master                                                      # 容器名为'redis-master'
     restart: unless-stopped                                                                   # 指定容器退出后的重启策略为始终重启，但是不考虑在Docker守护进程启动时就已经停止了的容器
     command: redis-server /etc/redis/redis.conf --port 6380 --requirepass 123456 --appendonly no # 启动redis服务并添加密码为：123456,默认不开启redis-aof方式持久化配置
@@ -23,7 +23,7 @@ services:
       - redis
   # 从1
   redis-slave1:
-    image: registry.cn-hangzhou.aliyuncs.com/zhengqing/redis:7.0.5                   # 镜像'redis:7.0.5'
+    image: redis:7.0.5                   # 镜像'redis:7.0.5'
     container_name: redis-slave-1                                                    # 容器名为'redis-slave-1'
     restart: unless-stopped                                                                   # 指定容器退出后的重启策略为始终重启，但是不考虑在Docker守护进程启动时就已经停止了的容器
     command: redis-server /etc/redis/redis.conf --port 6381 --requirepass 123456 --appendonly no --slaveof redis-master 6380 --masterauth 123456 # 启动redis服务并添加密码为：123456,默认不开启redis-aof方式持久化配置,连接并认证master节点
@@ -43,7 +43,7 @@ services:
       - redis-master
   # 从2
   redis-slave2:
-    image: registry.cn-hangzhou.aliyuncs.com/zhengqing/redis:7.0.5                   # 镜像'redis:7.0.5'
+    image: redis:7.0.5                   # 镜像'redis:7.0.5'
     container_name: redis-slave-2                                                    # 容器名为'redis-slave-2'
     restart: unless-stopped                                                                   # 指定容器退出后的重启策略为始终重启，但是不考虑在Docker守护进程启动时就已经停止了的容器
     command: redis-server /etc/redis/redis.conf --port 6382 --requirepass 123456 --appendonly no --slaveof redis-master 6380 --masterauth 123456 # 启动redis服务并添加密码为：123456,默认不开启redis-aof方式持久化配置,连接并认证master节点

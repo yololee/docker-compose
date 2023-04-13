@@ -70,5 +70,5 @@ cluster slots
 docker-compose -f docker-compose-redis-manager.yml -p redis-manager up -d
 ```
 
-web管理端：[`ip地址:8182`](http://www.zhengqingya.com:8182)
+web管理端：`ip地址:8182`
 登录账号密码：`admin/admin`

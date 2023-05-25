@@ -56,13 +56,10 @@ data_volume: /opt/soft-dev/docker/harbor/data
 
 安装成功如下：
 
-![image-20230329210300495](images/image-20230329210300495.png)
+![image-20230522155623976](https://gitee.com/huanglei1111/phone-md/raw/master/images/image-20230522155623976.png)
 
 访问 [http://127.0.0.1:11000](http://127.0.0.1:11000)，登录`admin/Harbor12345`
-
-![image-20230329210325540](images/image-20230329210325540.png)
 这里新建项目`test`，后面docker测试推送镜像需要，否则后面会报错: `unauthorized: project test not found: project test not found`
-![image-20230329222128156](images/image-20230329222128156.png)
 
 
 其它：
@@ -90,7 +87,7 @@ docker login -u admin -p Harbor12345 127.0.0.1:11000
 # docker login -u admin -p Harbor12345 172.100.40.215:11000
 ```
 
-![image-20230330105339027](images/image-20230330105339027.png)
+![image-20230522155830525](https://gitee.com/huanglei1111/phone-md/raw/master/images/image-20230522155830525.png)
 解决
 
 > 可参考： [https://goharbor.io/docs/2.3.0/install-config/run-installer-script/#connect-http](https://goharbor.io/docs/2.3.0/install-config/run-installer-script/#connect-http)
@@ -110,9 +107,9 @@ systemctl daemon-reload
 systemctl restart docker
 ```
 
-![image-20230330111125698](images/image-20230330111125698.png)
+![image-20230522155850097](https://gitee.com/huanglei1111/phone-md/raw/master/images/image-20230522155850097.png)
 
-![image-20230330111154843](images/image-20230330111154843.png)
+![image-20230522155902081](https://gitee.com/huanglei1111/phone-md/raw/master/images/image-20230522155902081.png)
 
 #### 2、docker推送镜像
 
@@ -131,10 +128,11 @@ docker tag nginx:latest 127.0.0.1:11000/test/nginx:v1
 docker push 127.0.0.1:11000/test/nginx:v1
 ```
 
-推送成功如下
-![image-20230330111008194](images/image-20230330111008194.png)
-harbor中查看
-![image-20230330111030454](images/image-20230330111030454.png)
+推送成功如下，harbor中查看
+
+![image-20230330111008194](https://gitee.com/huanglei1111/phone-md/raw/master/images/image-20230330111008194.png)
+
+![image-20230330111030454](https://gitee.com/huanglei1111/phone-md/raw/master/images/image-20230330111030454.png)
 
 
 #### 3、docker拉取镜像

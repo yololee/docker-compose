@@ -102,3 +102,5 @@ docker stack ps myapp
 docker stack rm myapp
 ```
 
+> [参考文档（什么是docker swarm）](https://blog.csdn.net/budongfengqing/article/details/111596487)
+

@@ -1,0 +1,116 @@
+version: '3.7'
+services:
+  mysql-n1:
+    image: mysql:5.7
+    hostname: mysql-n1
+    ports:
+      - 3306:3306
+    user: root
+    environment:
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_ROOT_PASSWORD=a123456
+      - TZ=Asia/Shanghai
+    volumes:
+      # 和docker-compose 不一样的是要提前创建，否则会报错
+      - ./data/mysql-n1/db:/var/lib/mysql
+      - ./data/mysql-n1/logs:/var/log/mysql/
+      - ./init.d/master:/docker-entrypoint-initdb.d/:ro
+      - ./config:/etc/mysql/conf.d/:rw
+    command:
+      - "--server-id=1"
+      - "--default-authentication-plugin=mysql_native_password"
+      - "--character-set-server=utf8mb4"
+      - "--collation-server=utf8mb4_general_ci"
+      - "--explicit_defaults_for_timestamp=true"
+      - "--lower_case_table_names=1"
+      - "--binlog-ignore-db=mysql"
+      - "--binlog_format=row"
+      - "--log-bin=mysql-bin"
+      - "--sync_binlog=1"
+      - "--expire_logs_days=7"
+      - "--slave_skip_errors=1062"
+    networks:
+      - test-overlay
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == manager
+          - node.role == manager
+  mysql-n2:
+    image: mysql:5.7
+    hostname: mysql-n2
+    user: root
+    environment:
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_ROOT_PASSWORD=a123456
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./data/mysql-n2/db:/var/lib/mysql
+      - ./data/mysql-n2/logs:/var/log/mysql/
+      - ./init.d/slave/:/docker-entrypoint-initdb.d/:ro
+    command:
+      - "--server-id=2"
+      - "--default-authentication-plugin=mysql_native_password"
+      - "--character-set-server=utf8mb4"
+      - "--collation-server=utf8mb4_general_ci"
+      - "--explicit_defaults_for_timestamp=true"
+      - "--lower_case_table_names=1"
+      - "--binlog-ignore-db=mysql"
+      - "--binlog_format=row"
+      - "--log-bin=mysql-bin"
+      - "--sync_binlog=1"
+      - "--expire_logs_days=7"
+      - "--slave_skip_errors=1062"
+    depends_on:
+      - mysql-n1
+    networks:
+      - test-overlay
+    deploy:
+      placement:
+        constraints:
+          - node.role == worker
+  mysql-n3:
+    image: mysql:5.7
+    hostname: mysql-n3
+    user: root
+    environment:
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_ROOT_PASSWORD=a123456
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./data/mysql-n3/db:/var/lib/mysql
+      - ./data/mysql-n3/logs:/var/log/mysql/
+      - ./init.d/slave:/docker-entrypoint-initdb.d/:ro
+      - ./config:/etc/mysql/conf.d/:rw
+    command:
+      - "--server-id=3"
+      - "--default-authentication-plugin=mysql_native_password"
+      - "--character-set-server=utf8mb4"
+      - "--collation-server=utf8mb4_general_ci"
+      - "--explicit_defaults_for_timestamp=true"
+      - "--lower_case_table_names=1"
+      - "--binlog-ignore-db=mysql"
+      - "--binlog_format=row"
+      - "--log-bin=mysql-bin"
+      - "--sync_binlog=1"
+      - "--expire_logs_days=7"
+      - "--slave_skip_errors=1062"
+    depends_on:
+      - mysql-n1
+      - mysql-n2
+    networks:
+      - test-overlay
+    deploy:
+      placement:
+        constraints:
+          - node.role == worker
+
+networks:
+  test-overlay:
+    driver: overlay
+    attachable: true 
+    #false-统自动创建网桥名,格式为: 目录名_网桥名，默认为false; true-使用外部创建的网桥，需需要自己手动创建
+    external: false
+
+
+

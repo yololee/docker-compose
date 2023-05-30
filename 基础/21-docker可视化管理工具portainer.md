@@ -79,6 +79,8 @@ services:
     command: -H tcp://tasks.agent:9001 --tlsskipverify
     ports:
       - "19000:9000"
+    depends_on:
+      - agent     
     volumes:
       - /root/mye/portainer/data/portainer_data:/data
     networks:

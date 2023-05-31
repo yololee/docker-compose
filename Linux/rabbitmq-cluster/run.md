@@ -15,13 +15,21 @@
 git clone https://github.com/liangxiaobo/RabbitMQ-Docker-cluster.git
 ```
 
-执行`rabbitmq-cluster-network.sh`创建网络
+或者在浏览器查看gitee中的部署文件https://gitee.com/huanglei1111/docker-compose/tree/master/Linux/rabbitmq-cluster
+
+创建网络
 
 ```shell
 docker network create --driver overlay --attachable rabbitmq-cluster
 ```
 
-安装自己的需求修改`docker-compose-rabbitmq-cluster.yml`
+安装自己的需求修改`docker-compose.yml`
+
+重新创建一个docker-compose-rabbitmq.yml文件
+
+```shell
+vim docker-compose-rabbitmq.yml
+```
 
 使用了docker-compose编排3.3版本的`docker config`就不需要在每台mq的机器上放置两个配置文件
 

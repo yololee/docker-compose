@@ -1,0 +1,146 @@
+version: '3'
+
+networks:
+  redis:
+    external: true
+
+services:
+  # ============================ ↓↓↓↓↓↓ redis ↓↓↓↓↓↓ ============================
+
+  # 主
+  redis-master:
+    image: redis:6.0.8
+    command: redis-server /etc/redis/redis.conf --port 6379 --requirepass 123456 --masterauth 123456 --appendonly no
+    environment:                       
+      TZ: Asia/Shanghai
+      LANG: en_US.UTF-8
+    volumes:                           
+      - "./redis-master-slave-sentinel/redis/master/data:/data"
+      - "./redis-master-slave-sentinel/redis/master/config/redis.conf:/etc/redis/redis.conf"
+    ports:
+      - "6379:6379"
+    networks:
+      - redis
+    deploy:
+      replicas: 1
+      placement:
+        constraints: 
+          - node.role == worker
+          - node.hostname == worker1     
+  # 从1
+  redis-slave-1:
+    image: redis:6.0.8                                      
+    command: redis-server /etc/redis/redis.conf --port 6380 --requirepass 123456 --appendonly no --slaveof redis-master 6379 --masterauth 123456
+    environment:             
+      TZ: Asia/Shanghai
+      LANG: en_US.UTF-8
+    volumes:                          
+      - "./redis-master-slave-sentinel/redis/slave-1/data:/data"
+      - "./redis-master-slave-sentinel/redis/slave-1/config/redis.conf:/etc/redis/redis.conf" 
+    ports:    
+      - "6380:6380"
+    networks:
+      - redis
+    depends_on:
+      - redis-master
+    deploy:
+      replicas: 1
+      placement:
+        constraints: 
+          - node.role == worker
+          - node.hostname == worker2 
+  # 从2
+  redis-slave-2:
+    image: redis:6.0.8                                                         
+    command: redis-server /etc/redis/redis.conf --port 6381 --requirepass 123456 --appendonly no --slaveof redis-master 6379 --masterauth 123456
+    environment:                      
+      TZ: Asia/Shanghai
+      LANG: en_US.UTF-8
+    volumes:                          
+      - "./redis-master-slave-sentinel/redis/slave-2/data:/data"
+      - "./redis-master-slave-sentinel/redis/slave-2/config/redis.conf:/etc/redis/redis.conf" 
+    ports:                           
+      - "6381:6381"
+    networks:
+      - redis
+    depends_on:
+      - redis-master
+    deploy:
+      replicas: 1
+      placement:
+        constraints: 
+          - node.role == worker
+          - node.hostname == worker3   
+
+  # ============================ ↓↓↓↓↓↓ sentinel ↓↓↓↓↓↓ ============================
+
+  redis-sentinel-1:
+    image: redis:6.0.8                  
+    command: redis-sentinel /etc/redis/sentinel.conf
+    environment:
+      TZ: Asia/Shanghai
+      LANG: en_US.UTF-8
+    ports:
+      - "26379:26379"
+    volumes:
+      - "./redis-master-slave-sentinel/sentinel/redis-sentinel-1.conf:/etc/redis/sentinel.conf"
+    networks:
+      - redis
+    depends_on:
+      - redis-master
+      - redis-slave-1
+      - redis-slave-2
+    deploy:
+      replicas: 1
+      placement:
+        constraints: 
+          - node.role == worker
+          - node.hostname == worker1   
+  redis-sentinel-2:
+    image: redis:6.0.8                    
+    command: redis-sentinel /etc/redis/sentinel.conf
+    environment:         
+      TZ: Asia/Shanghai
+      LANG: en_US.UTF-8
+    ports:
+      - "26380:26380"
+    volumes:
+      - "./redis-master-slave-sentinel/sentinel/redis-sentinel-2.conf:/etc/redis/sentinel.conf"
+    networks:
+      - redis
+    depends_on:
+      - redis-master
+      - redis-slave-1
+      - redis-slave-2
+      - redis-sentinel-1
+    deploy:
+      replicas: 1
+      placement:
+        constraints: 
+          - node.role == worker
+          - node.hostname == worker2   
+  redis-sentinel-3:
+    image: redis:6.0.8
+    command: redis-sentinel /etc/redis/sentinel.conf
+    environment:
+      TZ: Asia/Shanghai
+      LANG: en_US.UTF-8
+    ports:
+      - "26381:26381"
+    volumes:
+      - "./redis-master-slave-sentinel/sentinel/redis-sentinel-3.conf:/etc/redis/sentinel.conf"
+    networks:
+      - redis
+    depends_on:
+      - redis-master
+      - redis-slave-1
+      - redis-slave-2
+      - redis-sentinel-1
+      - redis-sentinel-2
+    deploy:
+      replicas: 1
+      placement:
+        constraints: 
+          - node.role == worker
+          - node.hostname == worker3   
+

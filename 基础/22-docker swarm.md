@@ -217,7 +217,31 @@ docker service update --rollback redis
 
 ![image-20230525145348808](https://gitee.com/huanglei1111/phone-md/raw/master/images/image-20230525145348808.png)
 
-##  Swarm常用命令
+##  Swarm常用命令	
+
+### 管理配置文件
+
+```shell
+# 查看已创建配置文件
+docker config ls
+
+# 将已有配置文件添加到docker配置文件中
+docker config create docker 配置文件名 本地配置文件
+
+# 1、创建配置文件
+docker config create nginx2_config nginx2.conf
+
+# 2、删除旧配置文件
+docker service update --config-rm ce_nginx_config 服务名
+
+#3、添加新配置文件到服务
+docker service update --config-add src=nginx2_config,target=/etc/nginx/nginx.conf ce_nginx
+
+# 删除配置文件
+docker service update --config-rm 配置文件名称 服务名
+```
+
+### 集群管理
 
 ```shell
 # 初始化集群
@@ -230,29 +254,50 @@ docker swarm join-token worker
 docker swarm join-token manager
  
 # 加入集群
-docker swarm join 	
+docker swarm join 
 
-# 查看集群所有节点
-docker node ls 
-	
-# 查看当前节点所有任务
+# 离开swarm
+docker swarm leave
+
+# 对swarm集群更新配置
+docker swarm update
+```
+
+### 管理swarm节点
+
+```shell
+
+# 查看集群中的节点
+docker node ls
+
+# 将manager角色降级为worker
+docker node demote 节点名称|节点ID
+
+# 将worker角色升级为manager
+docker node promote 节点名称|节点ID
+
+# 查看节点的详细信息，默认json格式
+docker node inspect 节点名称|节点ID
+
+# 查看节点信息平铺格式
+docker node inspect --pretty 节点名称|节点ID
+
+# 查看运行的一个或多个及节点任务数，默认当前节点
 docker node ps
- 
+
 # 删除节点（-f强制删除）
 docker node rm 节点名称|节点ID
- 
-# 查看节点详情
-docker node inspect 节点名称|节点ID
-	
-# 节点降级，由管理节点降级为工作节点
-docker node demote 节点名称|节点ID
- 
-# 节点升级，由工作节点升级为管理节点
-docker node promote 节点名称|节点ID
- 
+
 # 更新节点
 docker node update 节点名称|节点ID
 
+# 对节点设置状态（"active"正常|"pause"暂停|"drain"排除自身work任务）
+docker node update --availability
+```
+
+### 服务
+
+```shell
 # 创建服务
 docker service create
  
@@ -272,6 +317,95 @@ docker service rm 服务名称|服务ID
 docker service scale 服务名称|服务ID=n 	
  
 # 更新服务
-docker service update 服务名称|服务ID 	
+docker service update 服务名称|服务ID 
+
+# 容器加入指令
+docker service update --args "指令" 服务名
+
+# 更新服务容器版本
+docker service update --image 更新版本 服务名
+
+# 回滚服务容器版本
+docker service update --rollback 回滚服务名
+
+# 添加容器网络
+docker service update --network-add 网络名 服务名
+
+# 删除容器网络
+docker service update --network-rm 网络名 服务名
+
+# 服务添加暴露端口
+docker service update --publish-add 暴露端口:容器端口 服务名
+
+# 移除暴露端口
+docker service update --publish-rm 暴露端口:容器端口 服务名
+
+# 修改负载均衡模式为dnsrr
+docker service update --endpoint-mode dnsrr 服务名
+
+# 添加新的配置文件到容器内
+docker service update --config-add 配置文件名称，target=/../容器内配置文件名 服务名
 ```
+
+### 服务栈
+
+```shell
+# 通过.yml文件指令部署
+docker stack deploy -c 文件名.yml 编排服务名
+
+# 查看编排服务
+docker stack ls
+
+# 查看服务详情
+docker stack services 编排服务名
+
+# 删除服务
+docker stack rm 编排服务名
+
+# docker stack 不支持使用参数
+build
+cgroup_parent
+container_name
+devices
+dns
+dns_search
+tmpfs
+external_links
+links
+network_mode
+security_opt
+stop_signal
+sysctls
+userns_mode
+```
+
+### 添加网络
+
+```shell
+docker service create --network 网络名
+```
+
+### 挂载
+
+```shell
+# 创建volume类型数据卷
+docker service create --mount type=volume,src=volume名称,dst=容器目录
+# 创建bind读写目录挂载
+docker service create --mount type=bind,src=宿主目录,dst=容器目录
+# 创建bind只读目录挂载
+docker service create --mount type=bind,src=宿主目录,dst=容器目录,readonly
+# 创建dnsrr负载均衡模式
+docker service create --endpoint-mode dnsrr 服务名
+# 创建docker配置文件到容器本地目录
+docker service create --config source=docker配置文件,target=配置文件路径
+```
+
+### 暴露端口
+
+```shell
+# 创建添加端口
+docker service create --publish 暴露端口:容器端口 服务名
+```
+
+> [docker swarm 命令](https://blog.51cto.com/yangxingzhen/5980323)
 

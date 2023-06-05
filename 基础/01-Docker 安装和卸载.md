@@ -1,8 +1,12 @@
 ### Docker安装
 
-> 可参考 [https://docs.docker.com/engine/install/centos](https://gitee.com/link?target=https%3A%2F%2Fdocs.docker.com%2Fengine%2Finstall%2Fcentos)
+> centos系统可参考 [https://docs.docker.com/engine/install/centos](https://gitee.com/link?target=https%3A%2F%2Fdocs.docker.com%2Fengine%2Finstall%2Fcentos)
 >
-> tips: 基于 CentOS Linux release 7.6.1810 (Core)
+> ubuntu系统可参考https://docs.docker.com/engine/install/ubuntu/
+
+## 基于 CentOS
+
+>  Linux release 7.6.1810 (Core)
 
 ```shell
 # 查看CentOS系统版本
@@ -91,7 +95,54 @@ docker-compose --version
 pip3 uninstall docker-compose
 ```
 
-### `docker-compose`相关命令
+## 基于ubuntu
+
+更新apt包索引并安装包以允许apt使用 通过HTTPS的存储库
+
+```shell
+sudo apt-get update
+sudo apt-get install ca-certificates curl gnupg
+```
+
+添加Docker的官方GPG密钥
+
+```shell
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+```
+
+使用以下命令设置存储库
+
+```shell
+echo \
+  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+```
+
+更新`apt`包索引
+
+```shell
+sudo apt-get update
+```
+
+安装Docker Engine、containerd和Docker Compose
+
+```shell
+# 安装最新版本
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+
+通过运行 `hello-world`图像
+
+此命令下载测试映像并在容器中运行它。当 容器运行时，它会打印一条确认消息并退出
+
+```shell
+sudo docker run hello-world
+```
+
+## `docker-compose`相关命令
 
 ```shell
 # 构建镜像
@@ -114,7 +165,7 @@ docker-compose images
 docker-compose pull 镜像名
 ```
 
-### 常用shell组合
+## 常用shell组合
 
 ```shell
 # 删除所有容器

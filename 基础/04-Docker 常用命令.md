@@ -2,7 +2,7 @@
 
 ### 基本
 
-```
+```shell 
 # 查看当前docker版本
 docker -v
 docker verison

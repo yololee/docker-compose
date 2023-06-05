@@ -14,7 +14,7 @@ touch auto-generate-docker-tls-ca.sh
 #!/bin/sh
 
 ip=116.211.105.117
-password=eY9bU0cQ8mS8oX3r
+password=eY9bU0cgsgfss8oX3r
 dir=/root/docker/cert # 证书生成位置
 validity_period=10    # 证书有效期10年
 
@@ -77,7 +77,7 @@ sh auto-generate-docker-tls-ca.sh
 ```shell
 vim /lib/systemd/system/docker.service
 
-ExecStart=/usr/bin/dockerd --tlsverify --tlscacert=/root/docker/cert/ca.pem --tlscert=/root/docker/cert/server-cert.pem --tlskey=/root/docker/cert/server-key.pem -H fd:// -H tcp://0.0.0.0:2376 -H unix://var/run/docker.sock
+ExecStart=/usr/bin/dockerd --tlsverify --tlscacert=/root/docker/cert/ca.pem --tlscert=/root/docker/cert/server-cert.pem --tlskey=/root/docker/cert/server-key.pem  -H tcp://0.0.0.0:2375 -H unix://var/run/docker.sock
 
 # 如果防火墙开启的话，需要开放2375端口
 
@@ -85,7 +85,7 @@ ExecStart=/usr/bin/dockerd --tlsverify --tlscacert=/root/docker/cert/ca.pem --tl
 systemctl daemon-reload && systemctl restart docker
 ```
 
-![](https://gitee.com/huanglei1111/phone-md/raw/master/images/image-20230601215417526.png)
+![image-20230601233806954](https://gitee.com/huanglei1111/phone-md/raw/master/images/image-20230601233806954.png)
 
 在服务器测试
 

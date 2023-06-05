@@ -48,5 +48,5 @@ docker run -d -p 3307:3306 --name docker_test \
 -v /var/run/docker.sock:/var/run/docker.sock \
 -v /usr/lib64/libltdl.so.7:/usr/lib/x86_64-linux-gnu/libltdl.so.7 \
 -e MYSQL_ROOT_PASSWORD=root \
-registry.cn-hangzhou.aliyuncs.com/zhengqing/mysql:5.7
+registry.cn-hangzhou.aliyuncs.com/yolo/mysql:5.7
 ```

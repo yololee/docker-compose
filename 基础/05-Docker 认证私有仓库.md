@@ -8,7 +8,7 @@ docker login -u 用户名 -p 密码 私有仓库地址
 # ex:认证阿里云
 # docker login -u xxx registry.cn-hangzhou.aliyuncs.com
 # 认证harbor私服
-docker login -u admin -p Harbor12345 harbor.zhengqingya.com:11000
+docker login -u admin -p Harbor12345 harbor.yolo.com:11000
 ```
 
 ### 查看密码
@@ -29,7 +29,7 @@ cat ~/.docker/config.json
                 "registry.cn-hangzhou.aliyuncs.com": {
                         "auth": "emhxxxnLg=="
                 },
-                "harbor.zhengqingya.com:11000": {
+                "harbor.yolo.com:11000": {
                         "auth": "YWRtaW46SGFyYm9yMTIzNDU="
                 }
         }

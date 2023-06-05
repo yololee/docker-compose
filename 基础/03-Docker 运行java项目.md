@@ -26,7 +26,7 @@ docker run -d -p 5000:5000 -p 50001:50001 \
 -e PROFILE=prod \
 --restart always \
 --name demo \
-registry.cn-hangzhou.aliyuncs.com/zhengqing/demo
+img.chinamye.com/yolo/demo
 ```
 
 ### 其它

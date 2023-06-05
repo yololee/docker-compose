@@ -30,7 +30,7 @@ echo '<!DOCTYPE html>
 # -c :使用Dockerfile指令来创建镜像；
 # -m :提交时的说明文字；
 # -p :在commit时，将容器暂停。
-docker commit -m "This is my nginx image" -a "zhengqingya" nginx my-nginx:v1
+docker commit -m "This is my nginx image" -a "yolo" nginx my-nginx:v1
 
 # 查看自制镜像
 docker images my-nginx:v1
